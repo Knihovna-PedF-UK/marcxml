@@ -24,7 +24,7 @@ local function expand_patern(pattern, record)
   end)
 end
 
-local pattern = arg[1] or "{001}\t{245a,b}\t{655a:, }"
+local pattern = arg[1] or "{001}\t{245a,b,n,p}\t{650a:, }"
 
 local marcxml = require "marcxml"
 
@@ -43,8 +43,13 @@ marcxml.load(text,function(rec)
   --   -- process subfileds
   --   -- each field contans subfields
   --   for x,y in ipairs(field) do
-  --     t[#t+1] = y.value
+  --     if y.code then 
+  --       t[#t+1] = y.code .. ") " .. y.value
+  --     else
+  --       t[#t+1] =  y.value
+  --     end
   --   end
   --   print(tag, table.concat(t, "; "))
   -- end
+  -- if rec["001"][1].value == "990022189670106986" then os.exit() end
 end)
