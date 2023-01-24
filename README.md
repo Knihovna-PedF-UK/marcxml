@@ -12,7 +12,7 @@ local text = io.read("*all")
 
 -- the function in the second argument process each bib record
 -- once it is loaded
-marcxml.newload(text,function(rec)
+marcxml.load(text,function(rec)
   print "*****************"
   -- record contains tag numbers and table with fields
   for tag,field in pairs(rec) do
