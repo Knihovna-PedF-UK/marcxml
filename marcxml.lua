@@ -56,51 +56,7 @@ local function newload(text, fn)
   return records
 end
 
-print "start"
-local text = io.read("*all")
-
-newload(text,function(rec)
-  print "*****************"
-  for tag,field in pairs(rec) do
-    local t={}
-    -- process subfileds
-    for x,y in ipairs(field) do
-      t[#t+1] = y.value
-    end
-    print(tag, table.concat(t, "; "))
-  end
-end)
-
--- pokus s DOMem - je to moc pomalý
--- print "parse xml"
--- local dom = domobject.parse(text)
-
--- print "start processing"
--- for i, rec in ipairs(dom:query_selector("record")) do
---   print(i,"***********")
---   for _, data in ipairs(rec:query_selector("controlfield,datafield")) do
---     local tag = data:get_attribute("tag")
---     local text
---     if data:get_element_name() == "datafield" then
---       text = ""
---       for _, sub in ipairs(data:query_selector("subfield")) do
---         local tag = sub:get_attribute("code") or ""
---         text = text ..  "(" .. tag .. ") " .. sub:get_text() .. " "
---       end
---     else 
---       text = data:get_text()
---     end
-
---     print(tag, text)
---   end
-
--- end
-
--- load(text, function(record)
--- end)
---
 
 return {
   load = newload,
-  mapping = mapping
 }
