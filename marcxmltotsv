@@ -1,0 +1,50 @@
+#!/usr/bin/env texlua
+kpse.set_program_name "luatex"
+
+local function expand_patern(pattern, record)
+  -- pattern should be {<tagnumber><code>[,<code>][<:><separator>]}
+  return pattern:gsub("(%b{})", function(what)
+    local t = {}
+    local tag, codes, separator = what:match("(%d+)([%a%,]*):?([^}]*)")
+    --- don't even try when we cannot detect tag
+    if not tag then return "" end
+    if separator == "" then separator = " " end
+    local rec = record[tag] or {value=""}
+    for k,v in ipairs(rec) do
+      -- select only specified codes
+      if codes~="" then
+        if v.code and codes:match(v.code) then
+          t[#t+1] = v.value
+        end
+      else
+        t[#t+1] = v.value
+      end
+    end
+    return table.concat(t, separator)
+  end)
+end
+
+local pattern = arg[1] or "{001}\t{245a,b}\t{655a:, }"
+
+local marcxml = require "marcxml"
+
+
+local text = io.read("*all")
+
+-- the function in the second argument process each bib record
+-- once it is loaded
+marcxml.load(text,function(rec)
+  local to_print = expand_patern(pattern,  rec)
+  print(to_print)
+
+  -- record contains tag numbers and table with fields
+  -- for tag,field in pairs(rec) do
+  --   local t={}
+  --   -- process subfileds
+  --   -- each field contans subfields
+  --   for x,y in ipairs(field) do
+  --     t[#t+1] = y.value
+  --   end
+  --   print(tag, table.concat(t, "; "))
+  -- end
+end)
