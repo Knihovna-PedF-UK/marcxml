@@ -1,9 +1,21 @@
 # Knihovna pro zpracování MARCXML souborů z Almy
 
-## Použití
 
+##  marcxmltotsv
 
+Skript na převod MARCXML souboru na TSV. Jako parametr můžeme zadat šablonu ve formátu: `{číslo pole podpole:oddělovač}`. Několik podpolí oddělíme čárkou.
 
+Příklad pro vypsání autora, názvu, vydavatele, roku vydání a ISBN:
+
+    $ ./marcxmltotsv $'{100a};{700a:; }\t{245a,b,n,p}\t{260b}\t{260c}\t{020a}' < ~/Stažené/BIBLIOGRAPHIC_16353957890006986_1.xml
+
+Používáme `$'...` aby se expandovaly tabulátory
+
+- `{100a}` - vypíše obsah pole 100a
+- `{700a:; }` - opakující se 700a oddělí středníkem a mezerou
+- `{245a,b,n,p}` - vypíše podpole a, b, n, p
+
+## Použití knihovny
 
 ```
 kpse.set_program_name "luatex"
