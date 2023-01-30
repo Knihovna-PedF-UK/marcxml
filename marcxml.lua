@@ -45,7 +45,8 @@ local function newload(text, fn)
       -- get the current field and save the text as an value
       local curr = field[#field]
       if curr then
-        curr.value = text
+        -- there should be no newlines, but for example Tidy can introduce them
+        curr.value = text:gsub("\n", " "):gsub("%s+", " ")
       end
 
     end
